@@ -24,6 +24,15 @@ is prose, not code. What you get back instead of a draft: audience strategy,
 a beat/job/guidance structure table, medium constraints (truncation lines,
 scan behavior), raw material, and a critique loop for the draft you write.
 
+### cherry-pick
+
+Filter a pasted block of external content — a Perplexity answer, another LLM
+session, a research dump — down to only what improves the *current* project.
+Anchors on what you're building, atomizes the block into candidates, judges
+each against a bar (novel, on-goal, feasible, valid), and routes every one to
+KEEP, VERIFY, or DROP. The drop list is a first-class output: you see what was
+cut and why. Default verdict is drop — inclusiveness is failure.
+
 ### zoomout
 
 The between-arcs ritual. When a work arc closes and the next move is unclear,
