@@ -135,6 +135,38 @@ and roadmap, and ship a fenced same-day slice if one exists (or degrade
 gracefully to a mapping plus a captured backlog arc). Hold the mandate, not
 the rail. Ends by flagging the go-to-market moment the event just opened.
 
+### pushback
+
+An agreeable AI is a yes-man with infinite stamina. Before executing a
+nontrivial direction — a rewrite, a migration, a "let's just..." — the agent
+steelmans the idea, argues the strongest honest case against it, names the
+trade-off of every path including doing nothing, and lands a verdict: GO,
+GO-IF, or STOP. One pass, then full commitment — no relitigating after the
+user decides.
+
+Born from a standing instruction: "push back when something is a bad idea,
+and name the trade-off." A solo founder has no staff engineer whose job is
+to say "that won't work." This is that job.
+
+### decided
+
+Decisions don't stay decided — the choice survives in the code, the
+*reasoning* evaporates, and the same question comes back a month later.
+Logs each real decision to `docs/DECISIONS.md` with the why, the alternative
+that lost, and a revisit-when condition. When a settled topic reopens, the
+agent quotes the log back and asks one question: "what changed?" If nothing
+changed, the decision stands. Sibling of queue; zoomout reads the file.
+
+### preship
+
+The reviewer a solo founder doesn't have. Before anything irreversible or
+public goes out — a deploy, a release, a customer email, a live pricing
+change — one adversarial pass on the exact artifact, running the checks a
+missing reviewer, editor, QA, and ops person would have run. Findings point
+at the artifact, five ranked maximum, ending in SHIP, SHIP-AFTER, or HOLD.
+Depth calibrates to blast radius: a prod migration and a tweet are not the
+same review.
+
 ## License
 
 MIT
