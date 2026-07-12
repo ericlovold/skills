@@ -49,6 +49,49 @@ Capture the mid-arc thought without losing the arc. One line to
 when the repo is public — then straight back to the interrupted work. The
 backlog drains through planning passes, never through the capture itself.
 
+### input
+
+Ingestion with judgment, where `queue` is capture without it. Feed in a block
+of raw material you vouch for — strategy, sprint output, a snippet, live
+coding suggestions — and the agent reads the whole thing, splits it into
+pieces, and routes each to where it lives: applied to the working tree,
+queued to the backlog, proposed as a durable instruction, or held in the
+conversation if it's sensitive. Wrong-for-this-codebase pieces get pushed
+back with a reason. Ends in a per-piece disposition report — nothing fed in
+is ever silently dropped. (Named for Number 5 in *Short Circuit*; it ships
+with a small "INPUT!" flourish that never gets in the way of the report.)
+
+### cut-release
+
+The release ritual, so version and tag can't drift apart. Verify what's
+actually tagged vs what's on main, bump the version and stamp the changelog
+as their own PR that merges *before* the tag, then hand over release notes
+and a prefilled publish link, and verify Latest after publish. Every count in
+the notes is checked against the code, not the draft.
+
+### render-check
+
+No pixels, no claim. Before asserting any UI change works, seed the data the
+page needs, boot the dev server, screenshot the named pages with a headless
+browser, and attach the evidence — then read it yourself. A visual claim
+without a screenshot is a cheap lie; this makes the proof one word.
+
+### truthsync
+
+Drain the drift between what shipped and what the docs say. Diff merged work
+since the last release against the truth surfaces — changelog, roadmap,
+README, glossary, traceability — and propose the catch-up as one docs-only
+PR, every count verified against code. A zoom-out detects the drift; this
+fixes it. Run it before every release cut.
+
+### tailwind
+
+The market-event playbook. When news drops — a platform launch, a protocol
+shift — verify it at primary sources, map it onto your product's primitives
+and roadmap, and ship a fenced same-day slice if one exists (or degrade
+gracefully to a mapping plus a captured backlog arc). Hold the mandate, not
+the rail. Ends by flagging the go-to-market moment the event just opened.
+
 ## License
 
 MIT
