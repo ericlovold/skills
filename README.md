@@ -11,6 +11,49 @@ npx skills add ericlovold/skills            # pick from the list
 npx skills add ericlovold/skills --skill voice-fence
 ```
 
+## The loop
+
+They're not eight separate tricks — they're one working loop. Capture on the
+left, a build-and-ship spine down the middle, and `voice-fence` off to the
+side, guarding anything about to be read as *you*.
+
+```mermaid
+flowchart TD
+    NEWS([market news]):::ext
+    HUMAN([copy a human will sign]):::ext
+
+    subgraph CAPTURE [capture]
+        INPUT["/INPUT<br/>read · split · route · report"]:::skill
+        QUEUE["/queue<br/>park it, keep the thread"]:::skill
+    end
+
+    INPUT -->|Live| TREE[working tree]
+    INPUT -->|Later| BACK[(backlog)]
+    INPUT -->|Durable| MEM[AGENTS.md]
+    INPUT -->|Sensitive| CHAT[conversation only]
+    QUEUE --> BACK
+
+    BACK --> ZOOM["/zoomout<br/>pick the next move"]:::skill
+    ZOOM --> WORK{build the slice}
+    NEWS --> TAIL["/tailwind<br/>verify · map · fence"]:::skill
+    TAIL --> WORK
+    TREE --> WORK
+
+    WORK --> RENDER["/render-check<br/>no pixels, no claim"]:::skill
+    RENDER --> TRUTH["/truthsync<br/>docs catch the ships"]:::skill
+    TRUTH --> CUT["/cut-release<br/>tag = code"]:::skill
+    CUT --> ZOOM
+
+    WORK -.->|before it's read| VOICE["/voice-fence<br/>coach, never ghostwrite"]:::skill
+    HUMAN -.-> VOICE
+
+    classDef skill fill:#0b3d2e,stroke:#3ecf8e,color:#eafff5;
+    classDef ext fill:#1b1f24,stroke:#8892a0,color:#cdd6e0,stroke-dasharray:4 3;
+```
+
+*(`cherry-pick` filters external content into the same routing spirit as
+`/INPUT` — feed it, keep only what moves the current work.)*
+
 ## Skills
 
 ### voice-fence
