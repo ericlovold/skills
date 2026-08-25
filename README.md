@@ -13,9 +13,10 @@ npx skills add ericlovold/skills --skill voice-fence
 
 ## The loop
 
-They're not eight separate tricks — they're one working loop. Capture on the
-left, a build-and-ship spine down the middle, and `voice-fence` off to the
-side, guarding anything about to be read as *you*.
+They're not a pile of separate tricks — they're one working loop. Capture on the
+left, a build-and-ship spine down the middle, and two guards off to the side:
+`voice-fence` on anything about to be read as *you*, and `fresh-eyes` on
+anything about to be picked up by someone who wasn't there.
 
 ```mermaid
 flowchart TD
@@ -46,6 +47,9 @@ flowchart TD
 
     WORK -.->|before it's read| VOICE["/voice-fence<br/>coach, never ghostwrite"]:::skill
     HUMAN -.-> VOICE
+
+    WORK -.->|before someone else picks it up| FRESH["/fresh-eyes<br/>export verified state out"]:::skill
+    FRESH -.-> COLD([reader with no context]):::ext
 
     classDef skill fill:#0b3d2e,stroke:#3ecf8e,color:#eafff5;
     classDef ext fill:#1b1f24,stroke:#8892a0,color:#cdd6e0,stroke-dasharray:4 3;
@@ -103,6 +107,20 @@ conversation if it's sensitive. Wrong-for-this-codebase pieces get pushed
 back with a reason. Ends in a per-piece disposition report — nothing fed in
 is ever silently dropped. (Named for Number 5 in *Short Circuit*; it ships
 with a small "INPUT!" flourish that never gets in the way of the report.)
+
+### fresh-eyes
+
+The inverse of `input`. Where ingestion routes outside material *into* the
+project, this exports verified state *out* — to another agent, a contractor,
+a sprint someone else will run, or you in three weeks. Then it does the part
+people skip: it reads the project the way that stranger will, and names what
+your own fluency hides.
+
+Every claim is verified live in the run that writes the export — a handoff is
+read by someone who *can't check your work*, so a stale claim isn't caught,
+it's acted on. Ends in a blind-spot ledger: VERIFIED · LANDMINE · ASSUMED ·
+UNOWNED · DECIDE · DRIFT. The landmines carry their *tell* — the symptom the
+newcomer actually sees — not just the cause.
 
 ### cut-release
 
