@@ -1,0 +1,38 @@
+name: blender-video
+
+on:
+  pull_request:
+    paths: ["blender-video/**", "README.md", ".github/workflows/blender-video.yml"]
+  push:
+    branches: [main]
+    paths: ["blender-video/**", "README.md", ".github/workflows/blender-video.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  parser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pytest
+      - run: python -m pytest -q blender-video/tests
+
+  smoke-render:
+    # Renders one real frame of the README diagram. Catches bpy API drift that unit tests cannot.
+    needs: parser
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq blender xvfb
+      - run: python3 blender-video/scripts/render.py README.md -o smoke.png --direction LR --still 300 --res 640x360 --samples 4
+      - run: test -s smoke.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-frame
+          path: smoke.png
