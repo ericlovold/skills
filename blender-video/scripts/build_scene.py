@@ -404,8 +404,9 @@ def build(graph: dict, a: argparse.Namespace):
         frame_points.extend(pts)
         strength = 1.2 if e["style"] == "dotted" else 2.5
         tube.data.materials.append(mat_emit("edge", st["stroke"], strength))
-        g0 = appear[e["src"]] + 8
-        g1 = g0 + int(fps * 0.7)
+        # Finish drawing as the target lands, never reach toward a node that is not there yet.
+        g1 = max(appear[e["src"]] + 8 + int(fps * 0.7), appear[e["dst"]] + 6)
+        g0 = g1 - int(fps * 0.7)
         tube.data.bevel_factor_end = 0.0
         tube.data.keyframe_insert("bevel_factor_end", frame=g0)
         tube.data.bevel_factor_end = 1.0
