@@ -185,6 +185,16 @@ at the artifact, five ranked maximum, ending in SHIP, SHIP-AFTER, or HOLD.
 Depth calibrates to blast radius: a prod migration and a tweet are not the
 same review.
 
+### blender-video
+
+Diagrams you can fly through. A Mermaid flowchart goes in and an MP4 comes out:
+nodes rise rank by rank, edges draw themselves, then glowing pulses carry data
+along every edge while the camera orbits. Subgraphs become lifted tiers,
+datastores become cylinders, and the edge that closes a cycle arcs high above
+the plane so feedback reads as feedback. Rendered headless from scripts, so a
+video is reproducible, reviewable, and smoke-tested in CI rather than a one-off
+Blender session. The diagram at the top of this README is its test fixture.
+
 ## License
 
 MIT

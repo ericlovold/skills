@@ -1,0 +1,7 @@
+# render output: frames run to hundreds of MB, keep them out of git
+*_frames/
+*.mp4
+*.blend
+*.blend1
+__pycache__/
+.pytest_cache/
