@@ -1,0 +1,32 @@
+name: comcast-leads
+
+on:
+  push:
+    paths:
+      - "comcast-leads/**"
+      - ".github/workflows/comcast-leads.yml"
+  pull_request:
+    paths:
+      - "comcast-leads/**"
+      - ".github/workflows/comcast-leads.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: comcast-leads
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: comcast-leads/requirements.txt
+      - run: pip install -r requirements.txt
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: pytest -q
