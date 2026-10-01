@@ -70,6 +70,9 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(g.to_json(), fh)
 
     frames_dir = os.path.splitext(out)[0] + "_frames"
+    if args.still is None and os.path.isdir(frames_dir):
+        # ffmpeg reads f_%04d.png until a gap, so frames left by a longer earlier run would leak in.
+        shutil.rmtree(frames_dir)
     target = out if args.still is not None else frames_dir
     cmd = blender_cmd() + ["--python", os.path.join(HERE, "build_scene.py"), "--",
                            "--graph", graph_json, "--out", target, "--seconds", str(args.seconds),

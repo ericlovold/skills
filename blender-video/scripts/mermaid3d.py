@@ -187,9 +187,11 @@ def parse(text: str) -> Graph:
             continue
         if line.startswith("classDef "):
             _, name, props = line.split(None, 2)
-            g.class_defs[name] = dict(
-                p.split(":", 1) for p in props.rstrip(";").split(",") if ":" in p
-            )
+            # Mermaid allows "fill:#111, stroke:#0f0"; an unstripped " stroke" key is silently ignored.
+            g.class_defs[name] = {
+                k.strip(): v.strip()
+                for k, v in (p.split(":", 1) for p in props.rstrip(";").split(",") if ":" in p)
+            }
             continue
         if line.startswith("class "):
             _, ids, cls = line.split(None, 2)

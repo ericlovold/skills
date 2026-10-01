@@ -87,8 +87,11 @@ def mat_surface(name: str, color: str, rough: float = 0.45, emit: str | None = N
         p.inputs["Emission Strength"].default_value = emit_strength
     if alpha < 1.0:
         p.inputs["Alpha"].default_value = alpha
-        m.blend_method = "BLEND"
-        m.shadow_method = "NONE"
+        if hasattr(m, "surface_render_method"):  # 4.2+
+            m.surface_render_method = "BLENDED"
+        else:
+            m.blend_method = "BLEND"
+            m.shadow_method = "NONE"
         m.show_transparent_back = False
     _mat_cache[key] = m
     return m
@@ -462,25 +465,63 @@ def build(graph: dict, a: argparse.Namespace):
         key_scale(t, build_start - 14, 1.0)
         key_scale(t, build_start - 2, 0.0)
 
-    # Render settings: EEVEE with bloom and screen-space reflections on the ground.
+    configure_render(scene, a)
+    return scene
+
+
+def enum_ids(rna_owner, prop: str) -> list[str]:
+    return [i.identifier for i in rna_owner.bl_rna.properties[prop].enum_items]
+
+
+def configure_render(scene, a: argparse.Namespace):
+    """EEVEE with glow and ground reflections, across the Blender 4.2 engine rewrite.
+
+    4.2 renamed the engine to BLENDER_EEVEE_NEXT (5.x names it BLENDER_EEVEE again)
+    and dropped built-in bloom and SSR: the old flags still exist but do nothing.
+    So pick the engine by what this build offers, and on EEVEE Next do the glow in
+    the compositor and the reflections with ray tracing.
+    """
     r = scene.render
-    r.engine = "BLENDER_EEVEE"
+    engines = enum_ids(r, "engine")
+    r.engine = "BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in engines else "BLENDER_EEVEE"
     w, h = (int(v) for v in a.res.lower().split("x"))
     r.resolution_x, r.resolution_y, r.resolution_percentage = w, h, 100
     ee = scene.eevee
     ee.taa_render_samples = a.samples
-    ee.use_bloom = True
-    ee.bloom_threshold = 1.0
-    ee.bloom_intensity = 0.06
-    ee.bloom_radius = 5.0
-    ee.use_ssr = True
-    ee.use_gtao = True
-    ee.use_soft_shadows = True
-    scene.view_settings.view_transform = "AgX" if "AgX" in [
-        i.identifier for i in scene.view_settings.bl_rna.properties["view_transform"].enum_items] else "Filmic"
-    scene.view_settings.look = "None"
+    if bpy.app.version < (4, 2, 0):
+        ee.use_bloom = True
+        ee.bloom_threshold = 1.0
+        ee.bloom_intensity = 0.06
+        ee.bloom_radius = 5.0
+        ee.use_ssr = True
+        ee.use_gtao = True
+        ee.use_soft_shadows = True
+    else:
+        ee.use_raytracing = True
+        add_glare(scene)
+    transforms = enum_ids(scene.view_settings, "view_transform")
+    for name in ("AgX", "Filmic"):
+        if name in transforms:
+            scene.view_settings.view_transform = name
+            scene.view_settings.look = "None"
+            break
     r.image_settings.file_format = "PNG"
-    return scene
+
+
+def add_glare(scene):
+    """Compositor bloom: what EEVEE's built-in bloom did before 4.2."""
+    scene.use_nodes = True
+    nt = scene.node_tree
+    layers = next(n for n in nt.nodes if n.type == "R_LAYERS")
+    comp = next(n for n in nt.nodes if n.type == "COMPOSITE")
+    glare = nt.nodes.new("CompositorNodeGlare")
+    glare.glare_type = "FOG_GLOW"
+    glare.quality = "MEDIUM"
+    glare.threshold = 1.0
+    glare.size = 7
+    glare.mix = -0.6  # mostly the original image, a soft halo on the bright parts
+    nt.links.new(layers.outputs["Image"], glare.inputs["Image"])
+    nt.links.new(glare.outputs["Image"], comp.inputs["Image"])
 
 
 def main():

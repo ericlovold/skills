@@ -56,6 +56,14 @@ def test_subgraph_membership_and_classes():
     assert g.class_defs["svc"]["stroke"] == "#0f0"
 
 
+def test_classdef_tolerates_spaces_after_commas():
+    g = m.parse("""flowchart LR
+        A:::svc
+        classDef svc fill:#111, stroke:#0f0 , color: #fff;
+    """)
+    assert g.class_defs["svc"] == {"fill": "#111", "stroke": "#0f0", "color": "#fff"}
+
+
 def test_comments_and_unsupported_directives_are_skipped():
     g = m.parse("""flowchart LR
         %% a comment

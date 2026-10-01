@@ -55,6 +55,9 @@ people write Mermaid (main flow first, `CUT --> ZOOM` last).
 - `scripts/build_scene.py`: runs inside Blender, builds and animates the scene.
 - `scripts/render.py`: the one command. Wraps Blender in `xvfb-run` on headless
   Linux (EEVEE needs an OpenGL context; software rendering works, no GPU needed).
+- Tested on Blender 4.0 (legacy EEVEE, built-in bloom) and 4.2 (EEVEE Next,
+  bloom moved to a compositor glare node). The engine is picked by what the
+  installed Blender offers, so either works.
 - `--save-blend` writes the `.blend` so you can open it and hand-tune a shot.
 
 ## Interactive work: Blender MCP
